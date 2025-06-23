@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hourly Rate to Salary Calculator | Hourly to Annual Income Converter</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Hourly Rate to Annual Salary Calculator</h2>
+
+<label>Hourly Rate ($/hour):</label>
+<input type="number" id="hourly_rate" placeholder="Example: 75">
+
+<label>Hours per week:</label>
+<input type="number" id="hours_per_week" placeholder="Example: 40">
+
+<label>Weeks per year (typically 52):</label>
+<input type="number" id="weeks_per_year" placeholder="Example: 52">
+
+<button onclick="calculateAnnualSalary()">Calculate Annual Salary</button>
+
+<div id="hourly_salary_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateAnnualSalary() {
+    const hourlyRate = parseFloat(document.getElementById('hourly_rate').value) || 0;
+    const hoursPerWeek = parseFloat(document.getElementById('hours_per_week').value) || 0;
+    const weeksPerYear = parseFloat(document.getElementById('weeks_per_year').value) || 0;
+
+    const annualSalary = hourlyRate * hoursPerWeek * weeksPerYear;
+
+    document.getElementById('hourly_salary_result').innerHTML = `
+        <p><strong>Estimated Annual Salary:</strong> $${annualSalary.toFixed(2)}</p>
+        <hr>
+        <p>This calculator converts your hourly wage into an estimated annual salary based on your inputs. Adjust for vacation or unpaid weeks if needed.</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

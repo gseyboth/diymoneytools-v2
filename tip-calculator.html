@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tip Calculator | Bill + Tip Total Estimator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Tip Calculator</h2>
+
+    <label>Bill Amount ($):</label>
+<input type="number" id="tip_bill" placeholder="Example: 85.50">
+
+<label>Tip Percentage (%):</label>
+<input type="number" id="tip_percent" placeholder="Example: 18">
+
+<button onclick="calculateTip()">Calculate Tip</button>
+
+<div id="tip_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateTip() {
+    const bill = parseFloat(document.getElementById('tip_bill').value) || 0;
+    const tipPercent = parseFloat(document.getElementById('tip_percent').value) / 100 || 0;
+
+    const tipAmount = bill * tipPercent;
+    const totalBill = bill + tipAmount;
+
+    document.getElementById('tip_result').innerHTML = `
+        <p><strong>Tip Amount:</strong> $${tipAmount.toFixed(2)}</p>
+        <p><strong>Total Bill with Tip:</strong> $${totalBill.toFixed(2)}</p>
+        <hr>
+        <p>This simple calculator helps you quickly estimate the correct tip and total bill amount for dining or services.</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

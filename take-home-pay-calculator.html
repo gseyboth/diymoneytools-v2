@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Take-Home Pay Calculator | After-Tax Salary Estimator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Take-Home Pay Calculator</h2>
+
+    <label>Annual Salary ($):</label>
+<input type="number" id="takehome_salary" placeholder="Example: 80000">
+
+<label>Federal Tax Rate (%):</label>
+<input type="number" step="0.01" id="takehome_federal_tax" placeholder="Example: 22">
+
+<label>State Tax Rate (%):</label>
+<input type="number" step="0.01" id="takehome_state_tax" placeholder="Example: 4.75">
+
+<button onclick="calculateTakeHome()">Calculate Take-Home Pay</button>
+
+<div id="takehome_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateTakeHome() {
+    const salary = parseFloat(document.getElementById('takehome_salary').value) || 0;
+    const federalTax = parseFloat(document.getElementById('takehome_federal_tax').value) / 100 || 0;
+    const stateTax = parseFloat(document.getElementById('takehome_state_tax').value) / 100 || 0;
+
+    const totalTaxRate = federalTax + stateTax;
+    const annualTakeHome = salary * (1 - totalTaxRate);
+    const monthlyTakeHome = annualTakeHome / 12;
+
+    document.getElementById('takehome_result').innerHTML = `
+        <p><strong>Estimated Annual Take-Home Pay:</strong> $${annualTakeHome.toFixed(2)}</p>
+        <p><strong>Estimated Monthly Take-Home Pay:</strong> $${monthlyTakeHome.toFixed(2)}</p>
+        <hr>
+        <p>This calculator estimates your take-home pay after federal and state income taxes. It does not include Social Security, Medicare, or other deductions.</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

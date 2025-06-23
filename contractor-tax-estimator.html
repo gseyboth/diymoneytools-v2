@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contractor Tax Estimator NC 2025 | Self Employment Tax Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Contractor Tax Estimator</h2>
+
+    <label>Gross Annual Income ($):</label>
+<input type="number" id="tax_income" placeholder="Example: 90000">
+
+<label>Estimated Federal Tax Rate (%):</label>
+<input type="number" step="0.01" id="tax_federal" placeholder="Example: 15">
+
+<label>Estimated State Tax Rate (%):</label>
+<input type="number" step="0.01" id="tax_state" placeholder="Example: 5.25">
+
+<label>Self-Employment Tax Rate (%):</label>
+<input type="number" step="0.01" id="tax_self" placeholder="Example: 15.3">
+
+<button onclick="calculateContractorTax()">Calculate Estimated Taxes</button>
+
+<div id="tax_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateContractorTax() {
+    const income = parseFloat(document.getElementById('tax_income').value) || 0;
+    const federalRate = parseFloat(document.getElementById('tax_federal').value) / 100 || 0;
+    const stateRate = parseFloat(document.getElementById('tax_state').value) / 100 || 0;
+    const selfRate = parseFloat(document.getElementById('tax_self').value) / 100 || 0;
+
+    const federalTax = income * federalRate;
+    const stateTax = income * stateRate;
+    const selfTax = income * selfRate;
+    const totalTax = federalTax + stateTax + selfTax;
+    const netIncome = income - totalTax;
+
+    document.getElementById('tax_result').innerHTML = `
+        <p><strong>Total Estimated Taxes:</strong> $${totalTax.toFixed(2)}</p>
+        <p><strong>Estimated Net Income:</strong> $${netIncome.toFixed(2)}</p>
+        <hr>
+        <p>This calculator estimates your federal, state, and self-employment taxes as a contractor or freelancer in NC or other US states.</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

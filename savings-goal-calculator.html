@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Savings Goal Calculator | Retirement Income Planner</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Savings & Retirement Goal Calculator</h2>
+
+    <label>Target Retirement Fund Goal ($):</label>
+<input type="number" id="retirement_goal" placeholder="Example: 500000">
+
+<label>Current Savings ($):</label>
+<input type="number" id="retirement_current" placeholder="Example: 10000">
+
+<label>Years to Save:</label>
+<input type="number" id="retirement_years" placeholder="Example: 20">
+
+<label>Expected Annual Return (%):</label>
+<input type="number" step="0.01" id="retirement_rate" placeholder="Example: 6">
+
+<label>Planned Retirement Duration (Years of withdrawals):</label>
+<input type="number" id="retirement_duration" placeholder="Example: 25">
+
+<button onclick="calculateRetirement()">Calculate Savings & Income</button>
+
+<div id="retirement_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateRetirement() {
+    const goal = parseFloat(document.getElementById('retirement_goal').value) || 0;
+    const current = parseFloat(document.getElementById('retirement_current').value) || 0;
+    const yearsToSave = parseFloat(document.getElementById('retirement_years').value) || 0;
+    const rate = parseFloat(document.getElementById('retirement_rate').value) / 100 || 0;
+    const retirementDuration = parseFloat(document.getElementById('retirement_duration').value) || 0;
+
+    const monthlyRate = rate / 12;
+    const totalMonths = yearsToSave * 12;
+
+    const needed = goal - current * Math.pow(1 + monthlyRate, totalMonths);
+    const monthlySavings = (needed * monthlyRate) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+
+    const incomePerMonth = goal / (retirementDuration * 12);
+
+    document.getElementById('retirement_result').innerHTML = `
+        <p><strong>Required Monthly Savings:</strong> $${monthlySavings.toFixed(2)}</p>
+        <p><strong>Estimated Income in Retirement:</strong> $${incomePerMonth.toFixed(2)} per month for ${retirementDuration} years</p>
+        <hr>
+        <p>This calculator helps you plan savings to reach a retirement goal and estimate monthly income during retirement.</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

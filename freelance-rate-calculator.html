@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Freelance Hourly Rate Calculator | Target Income Rate Planner</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Freelance Hourly Rate Calculator</h2>
+
+    <label>Desired Annual Income ($):</label>
+<input type="number" id="freelance_income" placeholder="Example: 100000">
+
+<label>Billable Hours per Week:</label>
+<input type="number" id="freelance_hours" placeholder="Example: 20">
+
+<label>Weeks per Year:</label>
+<input type="number" id="freelance_weeks" placeholder="Example: 48">
+
+<button onclick="calculateFreelanceRate()">Calculate Hourly Rate</button>
+
+<div id="freelance_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateFreelanceRate() {
+    const income = parseFloat(document.getElementById('freelance_income').value) || 0;
+    const hoursPerWeek = parseFloat(document.getElementById('freelance_hours').value) || 0;
+    const weeksPerYear = parseFloat(document.getElementById('freelance_weeks').value) || 0;
+
+    const totalBillableHours = hoursPerWeek * weeksPerYear;
+    const hourlyRate = income / totalBillableHours;
+
+    document.getElementById('freelance_result').innerHTML = `
+        <p><strong>Recommended Hourly Rate:</strong> $${hourlyRate.toFixed(2)} per hour</p>
+        <hr>
+        <p>This calculator helps freelancers estimate their target hourly rate to reach a desired income based on available billable hours per year.</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

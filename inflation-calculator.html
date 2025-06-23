@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inflation Calculator | Adjust Historical Dollar Value</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Inflation Calculator</h2>
+
+    <label>Amount ($):</label>
+<input type="number" id="inflation_amount" placeholder="Example: 100">
+
+<label>Start Year (e.g., 1990):</label>
+<input type="number" id="inflation_start_year" placeholder="Example: 1990">
+
+<label>End Year (e.g., 2025):</label>
+<input type="number" id="inflation_end_year" placeholder="Example: 2025">
+
+<button onclick="calculateInflation()">Calculate Adjusted Value</button>
+
+<div id="inflation_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateInflation() {
+    const amount = parseFloat(document.getElementById('inflation_amount').value) || 0;
+    const startYear = parseInt(document.getElementById('inflation_start_year').value) || 0;
+    const endYear = parseInt(document.getElementById('inflation_end_year').value) || 0;
+
+    const inflationRate = 0.025; // Simple average US inflation ~2.5% per year
+
+    const years = endYear - startYear;
+    const adjustedAmount = amount * Math.pow(1 + inflationRate, years);
+
+    document.getElementById('inflation_result').innerHTML = `
+        <p><strong>Adjusted Value in ${endYear}:</strong> $${adjustedAmount.toFixed(2)}</p>
+        <hr>
+        <p>This calculator estimates inflation-adjusted value based on an average US inflation rate of 2.5% per year. For more precise values, consult official CPI data.</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

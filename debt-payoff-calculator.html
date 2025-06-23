@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Debt Payoff Calculator | Snowball Method Payoff Time Estimator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, button { padding: 10px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h2>Debt Payoff Calculator (Snowball Method)</h2>
+
+    <label>Total Debt Amount ($):</label>
+<input type="number" id="debt_amount" placeholder="Example: 15000">
+
+<label>Monthly Payment ($):</label>
+<input type="number" id="debt_payment" placeholder="Example: 500">
+
+<label>Annual Interest Rate (%):</label>
+<input type="number" step="0.01" id="debt_interest" placeholder="Example: 15">
+
+<button onclick="calculateDebtPayoff()">Calculate Payoff Time</button>
+
+<div id="debt_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+
+<script>
+function calculateDebtPayoff() {
+    const balance = parseFloat(document.getElementById('debt_amount').value) || 0;
+    const monthlyPayment = parseFloat(document.getElementById('debt_payment').value) || 0;
+    const annualRate = parseFloat(document.getElementById('debt_interest').value) / 100 || 0;
+    const monthlyRate = annualRate / 12;
+
+    let months = 0;
+    let currentBalance = balance;
+
+    while (currentBalance > 0 && months < 600) {
+        currentBalance = currentBalance * (1 + monthlyRate) - monthlyPayment;
+        months++;
+    }
+
+    const years = Math.floor(months / 12);
+    const remMonths = months % 12;
+
+    document.getElementById('debt_result').innerHTML = `
+        <p><strong>Estimated Payoff Time:</strong> ${years} years and ${remMonths} months</p>
+        <hr>
+        <p>This calculator estimates how long it will take to pay off debt with fixed monthly payments and a given interest rate, using the snowball method (fixed monthly payments).</p>
+    `;
+}
+</script>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+</body>
+</html>

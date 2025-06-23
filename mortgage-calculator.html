@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mortgage Calculator | Simple Monthly Payment Estimator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; line-height: 1.6; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select { padding: 10px; margin-top: 5px; width: 100%; box-sizing: border-box; }
+        .radio-group { margin-top: 15px; }
+        .radio-option { display: inline-block; margin-right: 20px; cursor: pointer; }
+        button { margin-top: 20px; padding: 12px; width: 100%; background-color: #007bff; color: white; border: none; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .results { margin-top: 30px; padding: 15px; background: #f8f8f8; border: 1px solid #ccc; }
+        .tooltip { display: inline-block; margin-left: 5px; color: #007bff; cursor: pointer; }
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            display: block;
+            background: #333; color: #fff; padding: 5px 8px;
+            position: absolute; z-index: 1; font-size: 0.9em;
+            max-width: 250px; margin-top: 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Mortgage Calculator</h2>
+    <p>Estimate your monthly mortgage payments. Compare fixed vs variable rates with realistic projections. Defaults shown for example only.</p>
+
+    <label>Loan Amount ($):
+        <span class="tooltip" data-tooltip="Total amount of the loan after subtracting your down payment.">?</span>
+    </label>
+    <input type="number" id="mortgage_loan" value="300000">
+
+    <label>Down Payment ($):
+        <span class="tooltip" data-tooltip="Amount you will pay upfront (not part of the loan).">?</span>
+    </label>
+    <input type="number" id="mortgage_down" value="60000">
+
+    <label>Interest Rate (% annual):
+        <span class="tooltip" data-tooltip="Initial interest rate for the loan (APR). For variable rates, this is the starting rate.">?</span>
+    </label>
+    <input type="number" step="0.01" id="mortgage_rate" value="6.5">
+
+    <label>Loan Term (years):
+        <span class="tooltip" data-tooltip="Total number of years to pay off the mortgage.">?</span>
+    </label>
+    <input type="number" id="mortgage_years" value="30">
+
+    <div class="radio-group">
+        <label><strong>Rate Type:</strong></label>
+        <label class="radio-option">
+            <input type="radio" name="rate_type" value="fixed" checked onclick="calculateMortgage()"> Fixed
+        </label>
+        <label class="radio-option">
+            <input type="radio" name="rate_type" value="variable" onclick="calculateMortgage()"> Variable (ARM - simulated increases)
+        </label>
+    </div>
+
+    <button onclick="calculateMortgage()">Calculate Mortgage</button>
+
+    <div id="mortgage_result" class="results"></div>
+
+    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+
+<script>
+function formatNumber(num) {
+    return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function calculateMortgage() {
+    const loanAmount = parseFloat(document.getElementById('mortgage_loan').value) || 0;
+    const downPayment = parseFloat(document.getElementById('mortgage_down').value) || 0;
+    const principal = loanAmount - downPayment;
+
+    const baseRate = parseFloat(document.getElementById('mortgage_rate').value) / 100 || 0;
+    const years = parseInt(document.getElementById('mortgage_years').value) || 0;
+    const totalMonths = years * 12;
+
+    const rateType = document.querySelector('input[name="rate_type"]:checked').value;
+
+    let monthlyPayments = [];
+    let currentRate = baseRate;
+    const monthlyPrincipal = principal;
+
+    if (rateType === "fixed") {
+        const monthlyRate = currentRate / 12;
+        const monthlyPayment = (monthlyPrincipal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -totalMonths));
+
+        for (let i = 0; i < totalMonths; i++) {
+            monthlyPayments.push(monthlyPayment);
+        }
+
+    } else {
+        // Variable Rate Simulation
+        // For demo: rate increases +0.25% each year for 5 years, then holds
+        let monthsRemaining = totalMonths;
+        let month = 0;
+        let simulatedRate = currentRate;
+
+        while (monthsRemaining > 0) {
+            const monthlyRate = simulatedRate / 12;
+            const monthsThisYear = Math.min(12, monthsRemaining);
+
+            const monthlyPayment = (monthlyPrincipal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -(monthsRemaining)));
+
+            for (let i = 0; i < monthsThisYear; i++) {
+                monthlyPayments.push(monthlyPayment);
+                month++;
+            }
+
+            // Increase rate for next year if in first 5 years
+            if (month < 60) {
+                simulatedRate += 0.0025; // +0.25% per year in first 5 years
+            }
+
+            monthsRemaining -= monthsThisYear;
+        }
+    }
+
+    const totalPaid = monthlyPayments.reduce((sum, pmt) => sum + pmt, 0);
+    const totalInterest = totalPaid - principal;
+    const avgMonthlyPayment = totalPaid / totalMonths;
+
+    let note = "";
+    if (rateType === "variable") {
+        note = "<p><em>Note: Variable rate projection assumes annual increases of 0.25% for the first 5 years, then stable. Real future rates may differ.</em></p>";
+    }
+
+    document.getElementById('mortgage_result').innerHTML = `
+        <h3>Your Results:</h3>
+        <p><strong>Average Monthly Payment:</strong> $${formatNumber(avgMonthlyPayment)}</p>
+        <p><strong>Total Interest Paid:</strong> $${formatNumber(totalInterest)}</p>
+        <p><strong>Total Loan Cost:</strong> $${formatNumber(totalPaid + downPayment)}</p>
+        ${note}
+    `;
+}
+</script>
+
+</body>
+</html>
